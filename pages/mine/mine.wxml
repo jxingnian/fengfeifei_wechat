@@ -21,11 +21,17 @@
         <text class="ff-row__label">角色</text>
         <text class="ff-row__value">{{user.role || '-'}}</text>
       </view>
+      <view class="ff-row">
+        <text class="ff-row__label">微信</text>
+        <text class="ff-row__value">{{wechatBound ? '已绑定' : '未绑定'}}</text>
+      </view>
+      <view class="ff-btn ff-btn--ghost ff-btn--block" wx:if="{{!wechatBound}}" bindtap="onBindWechat">绑定微信（下次可一键登录）</view>
     </view>
 
     <view class="ff-card" wx:else>
       <view class="ff-empty__title">未登录</view>
-      <view class="ff-btn ff-btn--block" bindtap="onLogin">去登录</view>
+      <view class="ff-btn ff-btn--block" bindtap="onLogin">微信一键登录 / 账号登录</view>
+      <view class="ff-btn ff-btn--ghost ff-btn--block" bindtap="onRegister">注册账号</view>
     </view>
 
     <view class="ff-card">

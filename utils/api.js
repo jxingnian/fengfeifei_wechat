@@ -4,6 +4,22 @@
 const { request } = require('./request.js')
 const { getWsBaseUrl } = require('./config.js')
 
+// 获取微信登录凭证 code（微信一键登录用，不需要用户授权弹窗）
+function getWxCode() {
+  return new Promise((resolve, reject) => {
+    wx.login({
+      timeout: 10000,
+      success(res) {
+        if (res && res.code) resolve(res.code)
+        else reject(new Error((res && res.errMsg) || '获取微信登录凭证失败'))
+      },
+      fail(err) {
+        reject(new Error((err && err.errMsg) || '微信登录失败'))
+      }
+    })
+  })
+}
+
 const api = {
   // ---------- 账号 / 客户 ----------
   // 登录：POST /api/auth/login { account, password } -> { token, user }
@@ -13,6 +29,36 @@ const api = {
       method: 'POST',
       data: { account, password },
       auth: false
+    })
+  },
+
+  // 注册：POST /api/auth/register { account, password, name } -> { token, user }
+  register(payload) {
+    return request({
+      url: '/api/auth/register',
+      method: 'POST',
+      data: payload,
+      auth: false
+    })
+  },
+
+  // 微信一键登录：POST /api/auth/wechat/login { code, nickName, phoneCode }
+  // code 由 wx.login 获取；phoneCode 为 getPhoneNumber 回调的 code（需企业主体，选填）
+  wechatLogin(payload) {
+    return request({
+      url: '/api/auth/wechat/login',
+      method: 'POST',
+      data: payload,
+      auth: false
+    })
+  },
+
+  // 绑定微信：POST /api/auth/wechat/bind { code } （已登录账号关联微信）
+  wechatBind(code) {
+    return request({
+      url: '/api/auth/wechat/bind',
+      method: 'POST',
+      data: { code }
     })
   },
 
@@ -102,4 +148,4 @@ const api = {
   }
 }
 
-module.exports = api
+module.exports = Object.assign({ getWxCode }, api)

@@ -70,6 +70,10 @@ Page({
     wx.navigateTo({ url: '/pages/login/login' })
   },
 
+  onRegister() {
+    wx.navigateTo({ url: '/pages/login/login?mode=register' })
+  },
+
   onAdd() {
     if (!getApp().isLogin()) {
       this.onLogin()

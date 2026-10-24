@@ -1,5 +1,6 @@
 // pages/mine/mine.js
 const { getBaseUrl, setBaseUrl, DEFAULT_BASE_URL } = require('../../utils/config.js')
+const api = require('../../utils/api.js')
 const store = require('../../utils/device-store.js')
 const { toast } = require('../../utils/util.js')
 
@@ -7,15 +8,18 @@ Page({
   data: {
     isLogin: false,
     user: {},
+    wechatBound: false,
     baseUrl: '',
     deviceCount: 0
   },
 
   onShow() {
     const app = getApp()
+    const user = app.globalData.user || {}
     this.setData({
       isLogin: app.isLogin(),
-      user: app.globalData.user || {},
+      user,
+      wechatBound: !!(user.openid || user.wechatOpenid || user.wxBound),
       baseUrl: getBaseUrl(),
       deviceCount: store.list().length
     })
@@ -23,6 +27,31 @@ Page({
 
   onLogin() {
     wx.navigateTo({ url: '/pages/login/login' })
+  },
+
+  onRegister() {
+    wx.navigateTo({ url: '/pages/login/login?mode=register' })
+  },
+
+  onBindWechat() {
+    wx.showLoading({ title: '绑定中', mask: true })
+    api
+      .getWxCode()
+      .then((code) => api.wechatBind(code))
+      .then((res) => {
+        wx.hideLoading()
+        const data = (res && res.data) || res || {}
+        const user = Object.assign({}, this.data.user, data.user || {}, {
+          openid: data.openid || (data.user && data.user.openid) || true
+        })
+        getApp().globalData.user = user
+        this.setData({ user, wechatBound: true })
+        toast('已绑定微信', 'success')
+      })
+      .catch((err) => {
+        wx.hideLoading()
+        toast((err && err.message) || '绑定失败')
+      })
   },
 
   onBaseUrl(e) {
