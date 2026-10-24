@@ -1,0 +1,13 @@
+/* pages/mine/mine.wxss */
+page {
+  height: auto;
+  min-height: 100vh;
+}
+
+.ph {
+  color: #b3b8c8;
+}
+
+.tip {
+  margin-top: 16rpx;
+}

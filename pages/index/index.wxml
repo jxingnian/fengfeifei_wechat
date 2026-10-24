@@ -1,7 +1,48 @@
-<!--index.wxml-->
-<navigation-bar title="Weixin" back="{{false}}" color="black" background="#FFF"></navigation-bar>
-<scroll-view class="scrollarea" scroll-y type="list">
-  <view class="container">
-    Weixin
+<!--pages/index/index.wxml-->
+<navigation-bar title="凤飞飞" back="{{false}}" color="#1b2033" background="#f5f6fa">
+  <view slot="right" class="nav-actions">
+    <text class="nav-action" bindtap="onAdd">添加</text>
+    <text class="nav-action" bindtap="onMine">我的</text>
   </view>
-</scroll-view>
+</navigation-bar>
+
+<view class="ff-page">
+  <view class="ff-body">
+    <!-- 未登录 -->
+    <view wx:if="{{!isLogin}}" class="ff-empty">
+      <view class="ff-empty__title">还没有登录</view>
+      <view>登录后即可管理凤飞飞设备</view>
+      <view class="ff-btn ff-btn--block" bindtap="onLogin">立即登录</view>
+    </view>
+
+    <!-- 已登录：设备列表 -->
+    <block wx:else>
+      <view class="ff-card" wx:for="{{devices}}" wx:key="deviceId">
+        <view class="device-head" bindtap="onOpenChat" data-id="{{item.deviceId}}">
+          <view class="device-title">
+            <view class="ff-dot {{item.online ? 'ff-dot--online' : ''}}"></view>
+            <text class="device-name">{{item.name}}</text>
+            <text class="ff-tag">{{item.online ? '在线' : (item.onlineKnown ? '离线' : '未知')}}</text>
+          </view>
+          <view class="ff-muted device-id">ID：{{item.maskId}}</view>
+          <view class="ff-muted" wx:if="{{item.lastSeenText}}">最近上线：{{item.lastSeenText}}</view>
+        </view>
+        <view class="device-actions">
+          <view class="device-btn" data-id="{{item.deviceId}}" bindtap="onOpenChat">语音对话</view>
+          <view class="device-btn" data-id="{{item.deviceId}}" bindtap="onOpenCall">视频通话</view>
+          <view class="device-btn" data-id="{{item.deviceId}}" bindtap="onOpenDevice">管理</view>
+        </view>
+      </view>
+
+      <view wx:if="{{!loading && devices.length === 0}}" class="ff-empty">
+        <view class="ff-empty__title">还没有绑定设备</view>
+        <view>扫描设备二维码，或手动输入设备凭证完成绑定</view>
+        <view class="ff-btn ff-btn--block" bindtap="onAdd">添加设备</view>
+      </view>
+
+      <view wx:if="{{loading}}" class="ff-empty">加载中…</view>
+    </block>
+  </view>
+
+  <view wx:if="{{isLogin && devices.length > 0}}" class="fab" bindtap="onAdd">+</view>
+</view>

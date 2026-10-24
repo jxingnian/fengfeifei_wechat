@@ -1,0 +1,52 @@
+<!--pages/chat/chat.wxml-->
+<navigation-bar title="{{title}}" back="{{true}}" color="#1b2033" background="#f5f6fa">
+  <view slot="right" class="status-wrap">
+    <view class="ff-dot {{statusClass}}"></view>
+    <text class="status-text">{{statusText}}</text>
+  </view>
+</navigation-bar>
+
+<view class="chat">
+  <scroll-view class="chat-list" scroll-y enable-flex scroll-into-view="{{toView}}" scroll-with-animation>
+    <view class="chat-inner">
+      <view wx:for="{{messages}}" wx:key="id" id="msg-{{index}}" class="msg msg--{{item.role}}">
+        <view class="bubble">{{item.text}}</view>
+      </view>
+      <view wx:if="{{messages.length === 0}}" class="ff-empty">
+        <view class="ff-empty__title">开始对话</view>
+        <view>按住下方按钮说话，或直接输入文字</view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="chat-input">
+    <input
+      class="chat-input__field"
+      value="{{text}}"
+      placeholder="输入文字发送"
+      placeholder-class="ph"
+      confirm-type="send"
+      bindinput="onText"
+      bindconfirm="onSendText"
+    />
+    <view class="chat-input__send" bindtap="onSendText">发送</view>
+  </view>
+
+  <view class="chat-talk">
+    <view
+      class="talk-btn {{recording ? 'talk-btn--active' : ''}}"
+      bindtouchstart="onTalkStart"
+      bindtouchend="onTalkEnd"
+      bindtouchcancel="onTalkCancel"
+    >{{recording ? '松开结束' : '按住说话'}}</view>
+    <view class="ff-muted talk-tip" wx:if="{{aiSpeaking}}">设备正在说话…</view>
+  </view>
+
+  <view wx:if="{{recording}}" class="recording-mask">
+    <view class="recording-box">
+      <view class="wave"><view class="wave-bar"></view><view class="wave-bar"></view><view class="wave-bar"></view><view class="wave-bar"></view></view>
+      <view class="ff-muted">正在聆听…松开结束</view>
+      <view class="cancel-tip" bindtap="onTalkCancel">取消本次对话</view>
+    </view>
+  </view>
+</view>

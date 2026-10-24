@@ -1,0 +1,54 @@
+<!--pages/call/call.wxml-->
+<navigation-bar title="{{title}}" back="{{true}}" color="#1b2033" background="#f5f6fa"></navigation-bar>
+
+<view class="call">
+  <!-- 远端画面 -->
+  <view class="stage">
+    <live-player
+      wx:if="{{playUrl}}"
+      class="stage__remote"
+      src="{{playUrl}}"
+      mode="RTC"
+      autoplay
+      mute-audio="{{muted}}"
+      object-fit="fillCrop"
+      bindstatechange="onPlayState"
+      binderror="onPlayError"
+    />
+    <view wx:else class="stage__placeholder">
+      <view class="stage__avatar">{{initial}}</view>
+      <view class="stage__name">{{title}}</view>
+      <view class="stage__status">{{statusText}}</view>
+    </view>
+
+    <!-- 本地小窗 -->
+    <live-pusher
+      wx:if="{{pushUrl}}"
+      class="stage__local"
+      url="{{pushUrl}}"
+      mode="RTC"
+      autopush
+      muted="{{muted}}"
+      enable-camera="{{!cameraOff}}"
+      device-position="{{front ? 'front' : 'back'}}"
+      bindstatechange="onPushState"
+      binderror="onPushError"
+    />
+  </view>
+
+  <!-- 无推拉流地址时的说明 -->
+  <view class="ff-card" wx:if="{{!pushUrl}}">
+    <view class="ff-card__title">通话未就绪</view>
+    <view class="ff-muted">
+      小程序原生不支持 WebRTC，需要后端提供 RTMP 推流/拉流地址（或使用 TRTC 等音视频插件）。
+      接口 POST /api/devices/:deviceId/call-token 返回 pushUrl 与 playUrl 后即可自动接通。
+    </view>
+    <view class="ff-btn ff-btn--block" bindtap="onRetry">重新获取通话地址</view>
+  </view>
+
+  <view class="controls">
+    <view class="control" bindtap="onToggleMute">{{muted ? '取消静音' : '静音'}}</view>
+    <view class="control" bindtap="onSwitchCamera">切换摄像头</view>
+    <view class="control control--hangup" bindtap="onHangup">挂断</view>
+  </view>
+</view>

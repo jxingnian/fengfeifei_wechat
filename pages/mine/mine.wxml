@@ -1,0 +1,58 @@
+<!--pages/mine/mine.wxml-->
+<navigation-bar title="我的" back="{{true}}" color="#1b2033" background="#f5f6fa"></navigation-bar>
+
+<view class="ff-page">
+  <view class="ff-body">
+    <view class="ff-card" wx:if="{{isLogin}}">
+      <view class="ff-card__title">账号信息</view>
+      <view class="ff-row">
+        <text class="ff-row__label">账号</text>
+        <text class="ff-row__value">{{user.account || '-'}}</text>
+      </view>
+      <view class="ff-row">
+        <text class="ff-row__label">名称</text>
+        <text class="ff-row__value">{{user.name || '-'}}</text>
+      </view>
+      <view class="ff-row">
+        <text class="ff-row__label">客户</text>
+        <text class="ff-row__value">{{user.tenantName || user.organizationName || '-'}}</text>
+      </view>
+      <view class="ff-row">
+        <text class="ff-row__label">角色</text>
+        <text class="ff-row__value">{{user.role || '-'}}</text>
+      </view>
+    </view>
+
+    <view class="ff-card" wx:else>
+      <view class="ff-empty__title">未登录</view>
+      <view class="ff-btn ff-btn--block" bindtap="onLogin">去登录</view>
+    </view>
+
+    <view class="ff-card">
+      <view class="ff-card__title">服务地址</view>
+      <input
+        class="ff-input"
+        type="text"
+        placeholder="http://host:port"
+        placeholder-class="ph"
+        value="{{baseUrl}}"
+        bindblur="onBaseUrl"
+      />
+      <view class="ff-muted tip">修改后重新进入页面生效</view>
+      <view class="ff-btn ff-btn--ghost ff-btn--block" bindtap="onResetBaseUrl">恢复默认地址</view>
+    </view>
+
+    <view class="ff-card">
+      <view class="ff-card__title">本地数据</view>
+      <view class="ff-row">
+        <text class="ff-row__label">已绑定设备</text>
+        <text class="ff-row__value">{{deviceCount}} 台</text>
+      </view>
+      <view class="ff-btn ff-btn--danger ff-btn--block" bindtap="onClearDevices">清除本地设备</view>
+    </view>
+
+    <view class="ff-card" wx:if="{{isLogin}}">
+      <view class="ff-btn ff-btn--danger ff-btn--block" style="margin-top:0" bindtap="onLogout">退出登录</view>
+    </view>
+  </view>
+</view>

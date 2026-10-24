@@ -1,0 +1,78 @@
+<!--pages/device/device.wxml-->
+<navigation-bar title="设备管理" back="{{true}}" color="#1b2033" background="#f5f6fa"></navigation-bar>
+
+<view class="ff-page">
+  <view class="ff-body">
+    <view class="ff-card" wx:if="{{device}}">
+      <view class="ff-card__title">设备信息</view>
+      <view class="ff-row">
+        <text class="ff-row__label">名称</text>
+        <input class="ff-row__value ff-inline-input" value="{{name}}" bindinput="onName" placeholder="设备名称" />
+      </view>
+      <view class="ff-row">
+        <text class="ff-row__label">设备 ID</text>
+        <text class="ff-row__value" bindtap="onCopyId">{{deviceId}}</text>
+      </view>
+      <view class="ff-row">
+        <text class="ff-row__label">状态</text>
+        <text class="ff-row__value">{{statusText}}</text>
+      </view>
+      <view class="ff-row">
+        <text class="ff-row__label">最近上线</text>
+        <text class="ff-row__value">{{lastSeenText || '-'}}</text>
+      </view>
+      <view class="ff-btn ff-btn--block" bindtap="onSaveName">保存名称</view>
+    </view>
+
+    <view class="ff-card" wx:if="{{device}}">
+      <view class="ff-card__title">音量</view>
+      <slider
+        value="{{volume}}"
+        min="0"
+        max="100"
+        show-value
+        activeColor="#4a6cf7"
+        bindchange="onVolumeChange"
+      />
+      <view class="ff-muted tip">拖动后松手会自动下发到设备</view>
+    </view>
+
+    <view class="ff-card" wx:if="{{device}}">
+      <view class="ff-card__title">角色 / 音色</view>
+      <picker mode="selector" range="{{personaNames}}" value="{{personaIndex}}" bindchange="onPersonaChange" disabled="{{personaNames.length === 0}}">
+        <view class="ff-row">
+          <text class="ff-row__label">当前角色</text>
+          <text class="ff-row__value">{{personaNames[personaIndex] || '未设置'}}</text>
+        </view>
+      </picker>
+      <view class="ff-muted tip" wx:if="{{personaNames.length === 0}}">接口未返回角色列表时可在接口文档中补充 /api/personas</view>
+    </view>
+
+    <view class="ff-card" wx:if="{{config}}">
+      <view class="ff-card__title">设备配置</view>
+      <view class="ff-row">
+        <text class="ff-row__label">对话模型</text>
+        <text class="ff-row__value">{{config.voiceProvider || '-'}}</text>
+      </view>
+      <view class="ff-row" wx:if="{{config.input}}">
+        <text class="ff-row__label">输入采样率</text>
+        <text class="ff-row__value">{{config.input.sampleRate || '-'}} Hz</text>
+      </view>
+      <view class="ff-row" wx:if="{{config.output}}">
+        <text class="ff-row__label">输出采样率</text>
+        <text class="ff-row__value">{{config.output.sampleRate || '-'}} Hz</text>
+      </view>
+    </view>
+
+    <view class="ff-card" wx:if="{{device}}">
+      <view class="ff-btn ff-btn--ghost ff-btn--block" style="margin-top:0" bindtap="onOpenChat">语音对话</view>
+      <view class="ff-btn ff-btn--ghost ff-btn--block" bindtap="onOpenCall">视频通话</view>
+      <view class="ff-btn ff-btn--danger ff-btn--block" bindtap="onUnbind">解绑设备</view>
+    </view>
+
+    <view wx:if="{{!device}}" class="ff-empty">
+      <view class="ff-empty__title">设备不存在</view>
+      <view>该设备可能已在本机被清除，请重新绑定</view>
+    </view>
+  </view>
+</view>

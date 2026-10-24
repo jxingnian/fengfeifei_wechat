@@ -1,0 +1,95 @@
+/* pages/call/call.wxss */
+page {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.call {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 62vh;
+  background: #1b2033;
+  overflow: hidden;
+}
+
+.stage__remote {
+  width: 100%;
+  height: 100%;
+}
+
+.stage__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.stage__avatar {
+  width: 160rpx;
+  height: 160rpx;
+  line-height: 160rpx;
+  text-align: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 64rpx;
+  margin-bottom: 24rpx;
+}
+
+.stage__name {
+  font-size: 34rpx;
+  margin-bottom: 12rpx;
+}
+
+.stage__status {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.stage__local {
+  position: absolute;
+  right: 24rpx;
+  top: 24rpx;
+  width: 200rpx;
+  height: 280rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.controls {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 24rpx 32rpx calc(24rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  background: #f5f6fa;
+}
+
+.control {
+  width: 200rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  border-radius: 44rpx;
+  background: #fff;
+  color: #1b2033;
+  font-size: 28rpx;
+}
+
+.control--hangup {
+  background: #f5544a;
+  color: #fff;
+}

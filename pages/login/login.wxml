@@ -1,0 +1,47 @@
+<!--pages/login/login.wxml-->
+<navigation-bar title="登录" back="{{true}}" color="#1b2033" background="#f5f6fa"></navigation-bar>
+
+<view class="ff-page">
+  <view class="ff-body">
+    <view class="ff-card">
+      <view class="ff-card__title">账号登录</view>
+      <view class="field">
+        <input
+          class="ff-input"
+          type="text"
+          placeholder="账号"
+          placeholder-class="ph"
+          value="{{account}}"
+          bindinput="onAccount"
+        />
+      </view>
+      <view class="field">
+        <input
+          class="ff-input"
+          password="{{!showPassword}}"
+          placeholder="密码"
+          placeholder-class="ph"
+          value="{{password}}"
+          bindinput="onPassword"
+        />
+      </view>
+      <view class="ff-btn {{loading ? 'ff-btn--disabled' : ''}} ff-btn--block" bindtap="onSubmit">
+        {{loading ? '登录中…' : '登录'}}
+      </view>
+    </view>
+
+    <view class="ff-card">
+      <view class="ff-card__title">服务地址</view>
+      <input
+        class="ff-input"
+        type="text"
+        placeholder="http://host:port"
+        placeholder-class="ph"
+        value="{{baseUrl}}"
+        bindinput="onBaseUrl"
+      />
+      <view class="ff-muted tip">调试阶段请在开发者工具中勾选「不校验合法域名」</view>
+      <view class="ff-btn ff-btn--ghost ff-btn--block" bindtap="onResetBaseUrl">恢复默认地址</view>
+    </view>
+  </view>
+</view>

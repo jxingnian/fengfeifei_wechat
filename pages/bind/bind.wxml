@@ -1,0 +1,52 @@
+<!--pages/bind/bind.wxml-->
+<navigation-bar title="绑定设备" back="{{true}}" color="#1b2033" background="#f5f6fa"></navigation-bar>
+
+<view class="ff-page">
+  <view class="ff-body">
+    <view class="ff-card">
+      <view class="ff-card__title">扫码绑定</view>
+      <view class="ff-muted">扫描设备上的配网二维码，自动填入设备 ID 与凭证</view>
+      <view class="ff-btn ff-btn--block" bindtap="onScan">扫一扫</view>
+    </view>
+
+    <view class="ff-card">
+      <view class="ff-card__title">手动输入</view>
+      <view class="field">
+        <text class="field-label">设备 ID</text>
+        <input
+          class="ff-input"
+          type="text"
+          placeholder="deviceId"
+          placeholder-class="ph"
+          value="{{deviceId}}"
+          bindinput="onDeviceId"
+        />
+      </view>
+      <view class="field">
+        <text class="field-label">设备凭证</text>
+        <input
+          class="ff-input"
+          type="text"
+          placeholder="deviceToken"
+          placeholder-class="ph"
+          value="{{deviceToken}}"
+          bindinput="onDeviceToken"
+        />
+      </view>
+      <view class="field">
+        <text class="field-label">设备名称</text>
+        <input
+          class="ff-input"
+          type="text"
+          placeholder="选填，默认使用设备 ID"
+          placeholder-class="ph"
+          value="{{name}}"
+          bindinput="onName"
+        />
+      </view>
+      <view class="ff-btn {{submitting ? 'ff-btn--disabled' : ''}} ff-btn--block" bindtap="onSubmit">
+        {{submitting ? '绑定中…' : '绑定'}}
+      </view>
+    </view>
+  </view>
+</view>

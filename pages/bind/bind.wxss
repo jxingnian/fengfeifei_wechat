@@ -1,0 +1,20 @@
+/* pages/bind/bind.wxss */
+page {
+  height: auto;
+  min-height: 100vh;
+}
+
+.field {
+  margin-bottom: 24rpx;
+}
+
+.field-label {
+  display: block;
+  font-size: 26rpx;
+  color: #8a90a6;
+  margin-bottom: 12rpx;
+}
+
+.ph {
+  color: #b3b8c8;
+}

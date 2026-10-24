@@ -1,10 +1,75 @@
-/**index.wxss**/
+/* pages/index/index.wxss */
 page {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
+  height: auto;
+  min-height: 100vh;
 }
-.scrollarea {
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  padding-right: 8rpx;
+}
+
+.nav-action {
+  font-size: 28rpx;
+  color: #4a6cf7;
+  padding: 12rpx 16rpx;
+}
+
+.device-head {
+  padding-bottom: 20rpx;
+}
+
+.device-title {
+  display: flex;
+  align-items: center;
+}
+
+.device-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-right: 16rpx;
+}
+
+.device-id {
+  margin-top: 8rpx;
+}
+
+.device-actions {
+  display: flex;
+  border-top: 2rpx solid #eceef5;
+  padding-top: 20rpx;
+}
+
+.device-btn {
   flex: 1;
-  overflow-y: hidden;
+  text-align: center;
+  height: 68rpx;
+  line-height: 68rpx;
+  font-size: 26rpx;
+  color: #4a6cf7;
+  background: #eef2ff;
+  border-radius: 34rpx;
+  margin-right: 16rpx;
+}
+
+.device-btn:last-child {
+  margin-right: 0;
+  color: #8a90a6;
+  background: #f5f6fa;
+}
+
+.fab {
+  position: fixed;
+  right: 40rpx;
+  bottom: calc(60rpx + env(safe-area-inset-bottom));
+  width: 100rpx;
+  height: 100rpx;
+  line-height: 96rpx;
+  text-align: center;
+  border-radius: 50%;
+  background: #4a6cf7;
+  color: #fff;
+  font-size: 52rpx;
+  box-shadow: 0 8rpx 24rpx rgba(74, 108, 247, 0.35);
 }

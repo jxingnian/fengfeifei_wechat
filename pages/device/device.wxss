@@ -1,0 +1,15 @@
+/* pages/device/device.wxss */
+page {
+  height: auto;
+  min-height: 100vh;
+}
+
+.ff-inline-input {
+  text-align: right;
+  color: #1b2033;
+  font-size: 28rpx;
+}
+
+.tip {
+  margin-top: 12rpx;
+}
