@@ -1,12 +1,17 @@
 <navigation-bar title="{{title}}" back="{{true}}" color="#1b2033" background="#f5f6fa"></navigation-bar>
 <view class="call">
   <view class="stage">
-    <view class="stage__avatar">{{initial}}</view>
-    <view class="stage__name">{{title}}</view>
-    <view class="stage__status">{{statusText}}</view>
+    <rtc-media id="rtc-media" class="stage__remote" mounted="{{mediaMounted}}" transport="{{rtcTransport}}"
+      push-url="{{pushUrl}}" play-url="{{playUrl}}" muted="{{muted}}" bindtransportevent="onTransportEvent" />
+    <view wx:if="{{!connected}}" class="stage__placeholder">
+      <view class="stage__avatar">{{initial}}</view>
+      <view class="stage__name">{{title}}</view>
+      <view class="stage__status" role="status">{{statusText}}</view>
+    </view>
   </view>
+  <view class="call__status" wx:if="{{connected}}">{{statusText}}</view>
   <view class="controls">
-    <view class="control" bindtap="onToggleMute">{{muted ? '取消静音' : '静音'}}</view>
-    <view class="control control--hangup" bindtap="onHangup">挂断</view>
+    <button class="control" disabled="{{ended || !mediaMounted}}" bindtap="onToggleMute">{{muted ? '取消静音' : '静音'}}</button>
+    <button class="control control--hangup" disabled="{{ended}}" bindtap="onHangup">挂断</button>
   </view>
 </view>

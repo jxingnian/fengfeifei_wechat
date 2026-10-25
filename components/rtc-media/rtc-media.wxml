@@ -1,0 +1,9 @@
+<block wx:if="{{mounted && transport === 'native-rtmp'}}">
+  <live-player id="call-player" class="remote" src="{{playUrl}}" mode="RTC" autoplay="{{false}}"
+    min-cache="0.2" max-cache="0.8" sound-mode="speaker" object-fit="contain"
+    bindstatechange="onPlayState" binderror="onPlayError" />
+  <!-- Mount the native pusher with nonzero size. Never acquire phone video. -->
+  <live-pusher id="call-pusher" class="microphone" url="{{pushUrl}}" mode="RTC" autopush="{{false}}"
+    enable-camera="{{false}}" enable-mic="{{!muted}}" enable-agc="{{true}}" enable-ans="{{true}}"
+    audio-volume-type="voicecall" audio-quality="low" bindstatechange="onPushState" binderror="onPushError" />
+</block>

@@ -14,6 +14,7 @@
     "navigationBarBackgroundColor": "#f5f6fa",
     "backgroundColor": "#f5f6fa"
   },
+  "permission": { "scope.record": { "desc": "用于与已绑定设备进行语音对讲" } },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents"

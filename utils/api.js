@@ -35,6 +35,9 @@ module.exports = {
   sendText(id, text) { return request({ url: miniDevicePath(id) + '/chat', method: 'POST', data: { text } }) },
   createCallToken(id) { return request({ url: miniDevicePath(id) + '/call-token', method: 'POST' }) },
   createCall(id) { return request({ url: miniDevicePath(id) + '/calls', method: 'POST' }) },
+  createRtcCall(id, options = {}) { return request({ url: miniDevicePath(id) + '/rtc-calls', method: 'POST', data: options, timeout: 25000 }) },
+  heartbeatRtcCall(id) { return request({ url: '/api/mini/calls/' + encodeURIComponent(id) + '/heartbeat', method: 'POST' }) },
+  endRtcCall(id) { return request({ url: '/api/mini/calls/' + encodeURIComponent(id) + '/end', method: 'POST' }) },
   createDeviceSession(id) {
     return request({ url: devicePath(id) + '/sessions', method: 'POST' }).then(result => ({
       ...result, url: result.url && /^wss?:\/\//.test(result.url) ? result.url : getWsBaseUrl() + (result.url || '')
