@@ -21,11 +21,6 @@
         {{loading ? '登录中…' : '登录'}}
       </view>
 
-      <view class="divider"><text>或</text></view>
-      <view class="ff-btn ff-btn--wechat ff-btn--block" style="margin-top:0" bindtap="onWechatLogin">
-        {{wxLoading ? '微信登录中…' : '微信一键登录'}}
-      </view>
-      <view class="ff-muted tip">使用微信登录需后端配置小程序 appid / secret</view>
     </view>
 
     <!-- 注册 -->
@@ -47,6 +42,13 @@
         {{loading ? '注册中…' : '注册并登录'}}
       </view>
       <view class="ff-muted tip">注册后可绑定当前服务商的设备</view>
+    </view>
+
+    <view class="wechat-login">
+      <view class="divider"><text>或</text></view>
+      <view class="ff-btn ff-btn--wechat ff-btn--block {{wxLoading ? 'ff-btn--disabled' : ''}}" bindtap="onWechatLogin">
+        {{wxLoading ? '微信登录中…' : '微信一键登录'}}
+      </view>
     </view>
 
     <view class="ff-card">

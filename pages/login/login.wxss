@@ -43,7 +43,7 @@ page {
 .divider {
   position: relative;
   text-align: center;
-  margin: 40rpx 0 32rpx;
+  margin: 8rpx 0 32rpx;
 }
 
 .divider::before {
@@ -66,4 +66,8 @@ page {
 
 .ff-btn--wechat {
   background: #07c160;
+}
+
+.wechat-login {
+  margin: 0 4rpx 24rpx;
 }
