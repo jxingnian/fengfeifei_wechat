@@ -27,7 +27,6 @@ function request(options) {
     header = {},
     auth = true,
     timeout = 20000,
-    deviceAuth = null // { deviceId, deviceToken } 设备侧接口
   } = options
 
   const finalHeader = Object.assign({ 'Content-Type': 'application/json' }, header)
@@ -35,10 +34,7 @@ function request(options) {
     const token = getToken()
     if (token) finalHeader.Authorization = 'Bearer ' + token
   }
-  if (deviceAuth && deviceAuth.deviceId) {
-    finalHeader['X-Device-Id'] = deviceAuth.deviceId
-    finalHeader['X-Device-Token'] = deviceAuth.deviceToken || ''
-  }
+  const origin = getBaseUrl(), session = getToken()
 
   return new Promise((resolve, reject) => {
     wx.request({
@@ -48,12 +44,16 @@ function request(options) {
       header: finalHeader,
       timeout,
       success(res) {
+        if (getBaseUrl() !== origin || (auth && getToken() !== session)) {
+          reject(new Error('登录账号或服务地址已变化，请重新操作'))
+          return
+        }
         const status = res.statusCode
         if (status >= 200 && status < 300) {
           resolve(res.data)
           return
         }
-        if (status === 401) {
+        if (status === 401 && auth) {
           const app = getApp()
           if (app && app.onUnauthorized) app.onUnauthorized()
           reject(new Error(pickMessage(res, '登录已失效')))

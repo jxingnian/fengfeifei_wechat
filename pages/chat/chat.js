@@ -58,6 +58,7 @@ Page({
   },
 
   onUnload() {
+    this.disposed = true
     if (this.socket) this.socket.close()
     if (this.player) this.player.destroy()
     if (this.recorder) this.recorder.stop()
@@ -91,9 +92,14 @@ Page({
     })
   },
 
-  connect() {
-    this.socket = new DeviceSocket({
-      url: api.getDeviceWsUrl(this.device.deviceId, this.device.deviceToken),
+  async connect() {
+    try {
+      const session = await api.createDeviceSession(this.device.deviceId)
+      if (this.disposed) return
+      if (!session.url) throw Error('未获取到设备会话')
+      this.socket = new DeviceSocket({
+      url: session.url,
+      reconnect: false,
       on: {
         open: () => this.setStatus('connecting'),
         ready: (msg) => {
@@ -130,8 +136,12 @@ Page({
           if (text) this.appendAiText(text)
         }
       }
-    })
-    this.socket.connect()
+      })
+      this.socket.connect()
+    } catch (error) {
+      this.setStatus('error')
+      toast(error.message || '设备连接失败')
+    }
   },
 
   pushMessage(role, text) {
@@ -167,7 +177,9 @@ Page({
     if (!text) return
     this.pushMessage('me', text)
     this.setData({ text: '' })
-    api.sendText(this.data.deviceId, text).catch(() => {})
+    api.sendText(this.data.deviceId, text).then(result => {
+      if (!this.disposed) this.pushMessage('ai', result.text)
+    }).catch(error => toast(error.message || '发送失败'))
   },
 
   onTalkStart() {

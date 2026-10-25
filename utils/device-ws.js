@@ -103,6 +103,7 @@ class DeviceSocket {
   }
 
   _scheduleRetry() {
+    if (this.options.reconnect === false) return
     if (this.closedByUser) return
     if (this.retry >= MAX_RETRY) {
       this._emit('error', { message: '重连次数过多，请稍后重试' })

@@ -18,6 +18,10 @@ function getBaseUrl() {
 
 function setBaseUrl(url) {
   const value = normalize(url)
+  if ((value || DEFAULT_BASE_URL) !== getBaseUrl()) {
+    const app = getApp()
+    if (app && app.logout) app.logout()
+  }
   try {
     if (value) wx.setStorageSync(BASE_URL_KEY, value)
     else wx.removeStorageSync(BASE_URL_KEY)

@@ -31,7 +31,7 @@ Page({
     let list = store.list().map((item) => ({
       deviceId: item.deviceId,
       name: item.name || item.deviceId,
-      deviceToken: item.deviceToken,
+      tenantName: item.tenantName,
       online: !!item.online,
       onlineKnown: typeof item.online === 'boolean',
       lastSeenText: formatTime(item.lastSeenAt),
@@ -48,7 +48,7 @@ Page({
         list = store.mergeServerList(arr).map((item) => ({
           deviceId: item.deviceId,
           name: item.name || item.deviceId,
-          deviceToken: item.deviceToken,
+          tenantName: item.tenantName,
           online: !!item.online,
           onlineKnown: typeof item.online === 'boolean',
           lastSeenText: formatTime(item.lastSeenAt),
@@ -57,8 +57,9 @@ Page({
         this.setData({ devices: list })
         app.globalData.devices = list
       })
-      .catch(() => {
-        // 接口未就绪时保持本地列表
+      .catch((error) => {
+        if (!app.isLogin()) this.setData({ devices: [], isLogin: false })
+        toast(error.message || '设备列表加载失败')
       })
       .then(() => {
         this.setData({ loading: false })

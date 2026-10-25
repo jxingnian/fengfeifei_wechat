@@ -11,6 +11,7 @@ App({
   },
 
   onLaunch() {
+    wx.removeStorageSync('ff_devices')
     this.globalData.token = getToken() || ''
     this.globalData.user = getUser() || null
   },
@@ -20,6 +21,7 @@ App({
   },
 
   saveAuth(token, user) {
+    if (!user || user.role !== 'end_user') throw Error('请使用小程序用户账号')
     this.globalData.token = token || ''
     this.globalData.user = user || null
     setToken(this.globalData.token)
@@ -27,6 +29,7 @@ App({
   },
 
   logout() {
+    require('./utils/device-store.js').clear()
     clearAuth()
     this.globalData.token = ''
     this.globalData.user = null

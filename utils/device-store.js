@@ -1,53 +1,33 @@
-// utils/device-store.js —— 已绑定设备的本地缓存（含 deviceToken）
-// 后端接口文档确认前，设备凭证以本地存储为准，避免无法回连 WebSocket。
-const KEY = 'ff_devices'
-
-function readAll() {
-  try {
-    const list = wx.getStorageSync(KEY)
-    return Array.isArray(list) ? list : []
-  } catch (e) {
-    return []
+// Display cache, partitioned by backend + platform user. No hardware credentials.
+const { getUser } = require('./auth.js')
+const { getBaseUrl } = require('./config.js')
+function key() {
+  const user = getUser()
+  return user && user.id ? 'ff_devices_v2:' + getBaseUrl() + ':' + user.id : ''
+}
+function clean(device) {
+  return {
+    id: device.deviceId || device.id, deviceId: device.deviceId || device.id,
+    name: device.name, tenantId: device.tenantId, tenantName: device.tenantName,
+    online: device.online, lastSeenAt: device.lastSeenAt, authRevoked: device.authRevoked
   }
 }
-
-function writeAll(list) {
-  try {
-    wx.setStorageSync(KEY, list)
-  } catch (e) {}
-  return list
-}
-
 function list() {
-  return readAll()
+  try { const data = key() && wx.getStorageSync(key()); return Array.isArray(data) ? data.map(clean) : [] } catch (_) { return [] }
 }
-
-function get(deviceId) {
-  return readAll().find((item) => item.deviceId === deviceId) || null
+function write(items) {
+  const result = items.map(clean)
+  if (key()) wx.setStorageSync(key(), result)
+  return result
 }
-
+function clear() { if (key()) wx.removeStorageSync(key()) }
+function get(id) { return list().find(item => item.deviceId === id) || null }
 function upsert(device) {
-  const all = readAll()
-  const index = all.findIndex((item) => item.deviceId === device.deviceId)
-  if (index >= 0) all[index] = Object.assign({}, all[index], device)
-  else all.unshift(device)
-  return writeAll(all)
+  const id = device.deviceId || device.id, items = list(), index = items.findIndex(item => item.deviceId === id)
+  if (index < 0) items.push(clean(device))
+  else items[index] = Object.assign({}, items[index], device)
+  return write(items)
 }
-
-function remove(deviceId) {
-  return writeAll(readAll().filter((item) => item.deviceId !== deviceId))
-}
-
-// 用服务端返回的状态（在线/最近上线）合并到本地列表
-function mergeServerList(serverList) {
-  if (!Array.isArray(serverList)) return readAll()
-  const all = readAll()
-  return writeAll(
-    all.map((item) => {
-      const hit = serverList.find((s) => s.deviceId === item.deviceId)
-      return hit ? Object.assign({}, item, hit, { deviceToken: item.deviceToken }) : item
-    })
-  )
-}
-
-module.exports = { list, get, upsert, remove, mergeServerList }
+function remove(id) { return write(list().filter(item => item.deviceId !== id)) }
+function mergeServerList(items) { return write(Array.isArray(items) ? items : []) }
+module.exports = { list, get, upsert, remove, clear, mergeServerList }

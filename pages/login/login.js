@@ -96,7 +96,7 @@ Page({
   },
 
   onSubmit() {
-    if (this.data.loading) return
+    if (this.data.loading || this.data.wxLoading) return
     const mode = this.data.mode
     const payload = this.validate(mode)
     if (!payload) return
@@ -148,6 +148,7 @@ Page({
   },
 
   finishLogin(auth) {
+    if (!auth.user || auth.user.role !== 'end_user') throw new Error('此账号是后台账号，请注册小程序用户账号')
     wx.hideLoading()
     this.setData({ loading: false, wxLoading: false })
     getApp().saveAuth(auth.token, auth.user)

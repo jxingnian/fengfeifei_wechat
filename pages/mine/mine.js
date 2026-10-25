@@ -41,11 +41,9 @@ Page({
       .then((res) => {
         wx.hideLoading()
         const data = (res && res.data) || res || {}
-        const user = Object.assign({}, this.data.user, data.user || {}, {
-          openid: data.openid || (data.user && data.user.openid) || true
-        })
-        getApp().globalData.user = user
-        this.setData({ user, wechatBound: true })
+        const user = data.user
+        getApp().saveAuth(getApp().globalData.token, user)
+        this.setData({ user, wechatBound: !!user.wxBound })
         toast('已绑定微信', 'success')
       })
       .catch((err) => {
@@ -66,10 +64,10 @@ Page({
   onClearDevices() {
     wx.showModal({
       title: '清除本地设备',
-      content: '将删除本机保存的设备凭证，需重新扫码绑定',
+      content: '仅清除本机缓存，下次刷新会重新获取已绑定设备，不会解除绑定。',
       success: (res) => {
         if (!res.confirm) return
-        store.list().forEach((item) => store.remove(item.deviceId))
+        store.clear()
         this.setData({ deviceCount: 0 })
         toast('已清除', 'success')
       }
@@ -80,8 +78,9 @@ Page({
     wx.showModal({
       title: '退出登录',
       content: '退出后需要重新登录才能管理设备',
-      success: (res) => {
+      success: async (res) => {
         if (!res.confirm) return
+        try { await api.logout() } catch (_) {}
         getApp().logout()
         this.setData({ isLogin: false, user: {} })
         wx.reLaunch({ url: '/pages/index/index' })

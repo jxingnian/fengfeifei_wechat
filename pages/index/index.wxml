@@ -26,6 +26,7 @@
             <text class="ff-tag">{{item.online ? '在线' : (item.onlineKnown ? '离线' : '未知')}}</text>
           </view>
           <view class="ff-muted device-id">ID：{{item.maskId}}</view>
+          <view class="ff-muted">服务商：{{item.tenantName || '-'}}</view>
           <view class="ff-muted" wx:if="{{item.lastSeenText}}">最近上线：{{item.lastSeenText}}</view>
         </view>
         <view class="device-actions">
@@ -37,7 +38,7 @@
 
       <view wx:if="{{!loading && devices.length === 0}}" class="ff-empty">
         <view class="ff-empty__title">还没有绑定设备</view>
-        <view>扫描设备二维码，或手动输入设备凭证完成绑定</view>
+        <view>输入设备 ID 和用户绑定码添加设备</view>
         <view class="ff-btn ff-btn--block" bindtap="onAdd">添加设备</view>
       </view>
 

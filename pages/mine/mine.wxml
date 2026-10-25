@@ -14,12 +14,12 @@
         <text class="ff-row__value">{{user.name || '-'}}</text>
       </view>
       <view class="ff-row">
-        <text class="ff-row__label">客户</text>
-        <text class="ff-row__value">{{user.tenantName || user.organizationName || '-'}}</text>
+        <text class="ff-row__label">账号归属</text>
+        <text class="ff-row__value">平台用户（可添加多个服务商设备）</text>
       </view>
       <view class="ff-row">
         <text class="ff-row__label">角色</text>
-        <text class="ff-row__value">{{user.role || '-'}}</text>
+        <text class="ff-row__value">最终用户</text>
       </view>
       <view class="ff-row">
         <text class="ff-row__label">微信</text>
