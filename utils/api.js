@@ -34,6 +34,7 @@ module.exports = {
   unbindDevice(id) { return request({ url: miniDevicePath(id) + '/bind', method: 'DELETE' }) },
   sendText(id, text) { return request({ url: miniDevicePath(id) + '/chat', method: 'POST', data: { text } }) },
   createCallToken(id) { return request({ url: miniDevicePath(id) + '/call-token', method: 'POST' }) },
+  createCall(id) { return request({ url: miniDevicePath(id) + '/calls', method: 'POST' }) },
   createDeviceSession(id) {
     return request({ url: devicePath(id) + '/sessions', method: 'POST' }).then(result => ({
       ...result, url: result.url && /^wss?:\/\//.test(result.url) ? result.url : getWsBaseUrl() + (result.url || '')
