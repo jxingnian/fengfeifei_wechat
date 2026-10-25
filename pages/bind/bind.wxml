@@ -1,7 +1,7 @@
 <navigation-bar title="添加设备" back="{{true}}" color="#1b2033" background="#f5f6fa"></navigation-bar>
 <view class="ff-page"><view class="ff-body"><view class="ff-card">
   <view class="ff-card__title">绑定我的设备</view>
-  <view class="ff-muted">请向产品服务商获取设备 ID 和用户绑定码。添加后，可在同一账号管理不同品牌的设备。</view>
+  <view class="ff-muted">请向设备管理员获取设备 ID 和 6 位用户绑定码。绑定码 5 分钟有效且只能使用一次。</view>
   <view class="ff-btn ff-btn--block" bindtap="onScan">扫描绑定二维码</view>
   <view class="field"><text class="field-label">设备 ID</text>
     <input class="ff-input" value="{{deviceId}}" bindinput="onDeviceId" placeholder="设备 ID" maxlength="128" />

@@ -19,7 +19,7 @@ Page({
     this.setData({
       isLogin: app.isLogin(),
       user,
-      wechatBound: !!(user.openid || user.wechatOpenid || user.wxBound),
+      wechatBound: !!user.openid,
       baseUrl: getBaseUrl(),
       deviceCount: store.list().length
     })
@@ -31,25 +31,6 @@ Page({
 
   onRegister() {
     wx.navigateTo({ url: '/pages/login/login?mode=register' })
-  },
-
-  onBindWechat() {
-    wx.showLoading({ title: '绑定中', mask: true })
-    api
-      .getWxCode()
-      .then((code) => api.wechatBind(code))
-      .then((res) => {
-        wx.hideLoading()
-        const data = (res && res.data) || res || {}
-        const user = data.user
-        getApp().saveAuth(getApp().globalData.token, user)
-        this.setData({ user, wechatBound: !!user.wxBound })
-        toast('已绑定微信', 'success')
-      })
-      .catch((err) => {
-        wx.hideLoading()
-        toast((err && err.message) || '绑定失败')
-      })
   },
 
   onBaseUrl(e) {

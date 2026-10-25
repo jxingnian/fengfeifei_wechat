@@ -21,7 +21,7 @@ App({
   },
 
   saveAuth(token, user) {
-    if (!user || user.role !== 'end_user') throw Error('请使用小程序用户账号')
+    if (!user || !user.id) throw Error('服务端返回的小程序用户无效')
     this.globalData.token = token || ''
     this.globalData.user = user || null
     setToken(this.globalData.token)

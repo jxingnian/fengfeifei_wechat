@@ -7,25 +7,24 @@
       <view class="ff-card__title">账号信息</view>
       <view class="ff-row">
         <text class="ff-row__label">账号</text>
-        <text class="ff-row__value">{{user.account || '-'}}</text>
+        <text class="ff-row__value">{{user.username || '微信用户'}}</text>
       </view>
       <view class="ff-row">
         <text class="ff-row__label">名称</text>
-        <text class="ff-row__value">{{user.name || '-'}}</text>
+        <text class="ff-row__value">{{user.nickname || '-'}}</text>
       </view>
       <view class="ff-row">
         <text class="ff-row__label">账号归属</text>
-        <text class="ff-row__value">平台用户（可添加多个服务商设备）</text>
+        <text class="ff-row__value">当前小程序用户</text>
       </view>
       <view class="ff-row">
         <text class="ff-row__label">角色</text>
         <text class="ff-row__value">最终用户</text>
       </view>
       <view class="ff-row">
-        <text class="ff-row__label">微信</text>
-        <text class="ff-row__value">{{wechatBound ? '已绑定' : '未绑定'}}</text>
+        <text class="ff-row__label">登录方式</text>
+        <text class="ff-row__value">{{user.openid ? '微信' : '账号密码'}}</text>
       </view>
-      <view class="ff-btn ff-btn--ghost ff-btn--block" wx:if="{{!wechatBound}}" bindtap="onBindWechat">绑定微信（下次可一键登录）</view>
     </view>
 
     <view class="ff-card" wx:else>

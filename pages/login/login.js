@@ -31,7 +31,7 @@ Page({
     const user = app.globalData.user || {}
     this.setData({
       mode: query && query.mode === 'register' ? 'register' : 'login',
-      account: user.account || '',
+      account: user.username || user.account || '',
       baseUrl: getBaseUrl()
     })
   },
@@ -121,7 +121,7 @@ Page({
       })
       .catch((err) => {
         wx.hideLoading()
-        this.setData({ loading: false })
+        this.setData({ loading: false, wxLoading: false })
         toast((err && err.message) || (mode === 'register' ? '注册失败' : '登录失败'))
       })
   },
@@ -134,7 +134,7 @@ Page({
 
     api
       .getWxCode()
-      .then((code) => api.wechatLogin({ code }))
+      .then((code) => api.wechatLogin(code))
       .then((res) => {
         const auth = pickAuth(res, '')
         if (!auth.token) throw new Error('服务端未返回登录令牌')
@@ -148,7 +148,7 @@ Page({
   },
 
   finishLogin(auth) {
-    if (!auth.user || auth.user.role !== 'end_user') throw new Error('此账号是后台账号，请注册小程序用户账号')
+    if (!auth.user) throw new Error('服务端未返回用户信息')
     wx.hideLoading()
     this.setData({ loading: false, wxLoading: false })
     getApp().saveAuth(auth.token, auth.user)

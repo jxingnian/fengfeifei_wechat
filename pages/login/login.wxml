@@ -46,7 +46,7 @@
       <view class="ff-btn {{loading ? 'ff-btn--disabled' : ''}} ff-btn--block" bindtap="onSubmit">
         {{loading ? '注册中…' : '注册并登录'}}
       </view>
-      <view class="ff-muted tip">注册后可绑定多个平台客户的设备</view>
+      <view class="ff-muted tip">注册后可绑定当前服务商的设备</view>
     </view>
 
     <view class="ff-card">

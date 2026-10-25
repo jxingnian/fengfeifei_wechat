@@ -3,6 +3,9 @@ const BASE_URL_KEY = 'ff_base_url'
 
 // 测试服务器，可在「我的 - 服务地址」中修改
 const DEFAULT_BASE_URL = 'http://111.228.3.219:8080'
+// Set this to the `id` returned by the backend's POST /api/mini-apps endpoint.
+// It is not the WeChat AppID shown in project.config.json.
+const MINI_APP_RECORD_ID = '3a42fa8f-c8f6-4f9c-8ba0-9798762de837'
 
 function normalize(url) {
   return String(url || '').trim().replace(/\/+$/, '')
@@ -37,4 +40,4 @@ function getWsBaseUrl() {
   return base
 }
 
-module.exports = { DEFAULT_BASE_URL, getBaseUrl, setBaseUrl, getWsBaseUrl }
+module.exports = { DEFAULT_BASE_URL, MINI_APP_RECORD_ID, getBaseUrl, setBaseUrl, getWsBaseUrl }
