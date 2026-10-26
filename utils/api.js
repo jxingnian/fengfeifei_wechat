@@ -29,8 +29,8 @@ module.exports = {
   logout() { return request({ url: '/api/mini/auth/logout', method: 'POST' }) },
   getDevices() { return request({ url: '/api/mini/devices' }) },
   getDevice(id) { return request({ url: miniDevicePath(id) }) },
-  // 小程序只提交设备本地显示的临时授权码，后台根据当前登录用户完成设备创建和绑定。
-  claimDevice(code) { return request({ url: '/api/mini/devices/claim', method: 'POST', data: { code } }) },
+  // 小程序只读取后台已经生成的配对码，用于向用户展示；设备会在本地网页输入配对码。
+  getPairingCodes() { return request({ url: '/api/mini/pairing-codes' }) },
   updateDevice(id, patch) { return request({ url: miniDevicePath(id), method: 'PATCH', data: patch }) },
   unbindDevice(id) { return request({ url: miniDevicePath(id) + '/bind', method: 'DELETE' }) },
   sendText(id, text) { return request({ url: miniDevicePath(id) + '/chat', method: 'POST', data: { text } }) },

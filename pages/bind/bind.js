@@ -1,33 +1,33 @@
 const api = require('../../utils/api.js')
-const store = require('../../utils/device-store.js')
 const { toast } = require('../../utils/util.js')
 
 Page({
-  data: { code: '', submitting: false },
+  data: { pairingCodes: [], loading: false },
 
   onLoad() {
+    // 配对码属于登录后客户数据，未登录时不允许访问后台配对码列表。
     if (!getApp().isLogin()) wx.redirectTo({ url: '/pages/login/login' })
   },
 
-  // 设备连接后台后会在本地状态页显示 6 位授权码，小程序只需要录入这个码。
-  onCode(e) { this.setData({ code: e.detail.value.replace(/\D/g, '').slice(0, 6) }) },
+  onShow() {
+    this.loadPairingCodes()
+  },
 
-  async onSubmit() {
-    if (this.data.submitting) return
-    const code = this.data.code.trim()
-    if (!/^\d{6}$/.test(code)) return toast('请输入设备显示的 6 位授权码')
-    this.setData({ submitting: true })
-    wx.showLoading({ title: '绑定中', mask: true })
+  async loadPairingCodes() {
+    if (this.data.loading) return
+    this.setData({ loading: true })
     try {
-      const result = await api.claimDevice(code)
-      store.upsert(result.device)
-      toast('绑定成功', 'success')
-      wx.navigateBack()
+      // 该接口只读后台已创建的配对码，小程序不创建配对码，也不向后台提交配对码。
+      const pairingCodes = await api.getPairingCodes()
+      this.setData({ pairingCodes: pairingCodes || [] })
     } catch (error) {
-      toast(error.message || '绑定失败')
+      toast(error.message || '配对码加载失败')
     } finally {
-      wx.hideLoading()
-      this.setData({ submitting: false })
+      this.setData({ loading: false })
     }
-  }
+  },
+
+  onRefresh() {
+    this.loadPairingCodes()
+  },
 })
