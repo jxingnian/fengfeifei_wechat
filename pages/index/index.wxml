@@ -38,7 +38,7 @@
 
       <view wx:if="{{!loading && devices.length === 0}}" class="ff-empty">
         <view class="ff-empty__title">还没有绑定设备</view>
-        <view>输入设备 ID 和用户绑定码添加设备</view>
+        <view>输入设备本地显示的授权码添加设备</view>
         <view class="ff-btn ff-btn--block" bindtap="onAdd">添加设备</view>
       </view>
 

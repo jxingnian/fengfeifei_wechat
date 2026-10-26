@@ -29,7 +29,8 @@ module.exports = {
   logout() { return request({ url: '/api/mini/auth/logout', method: 'POST' }) },
   getDevices() { return request({ url: '/api/mini/devices' }) },
   getDevice(id) { return request({ url: miniDevicePath(id) }) },
-  claimDevice(deviceId, code) { return request({ url: miniDevicePath(deviceId) + '/claim', method: 'POST', data: { code } }) },
+  // 小程序只提交设备本地显示的临时授权码，后台根据当前登录用户完成设备创建和绑定。
+  claimDevice(code) { return request({ url: '/api/mini/devices/claim', method: 'POST', data: { code } }) },
   updateDevice(id, patch) { return request({ url: miniDevicePath(id), method: 'PATCH', data: patch }) },
   unbindDevice(id) { return request({ url: miniDevicePath(id) + '/bind', method: 'DELETE' }) },
   sendText(id, text) { return request({ url: miniDevicePath(id) + '/chat', method: 'POST', data: { text } }) },
